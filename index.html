@@ -11,85 +11,70 @@
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
   />
 
-  <!-- Your styles (stored in src/assets) -->
+  <!-- Your styles -->
   <link rel="stylesheet" href="src/assets/styles.css" />
 </head>
 <body>
   <!-- Header -->
-  <header class="site-header">
-    <div class="header-row">
-      <h1><i class="bi bi-lightning-charge-fill"></i>&nbsp;Runner App</h1>
-      <nav>
-        <a href="#"><i class="bi bi-house"></i> Home</a>
-        <a href="#"><i class="bi bi-journal-text"></i> Docs</a>
-        <a href="#"><i class="bi bi-terminal"></i> Examples</a>
-        <a href="#"><i class="bi bi-chat-dots"></i> Contact</a>
-        <a href="https://github.com/your-username/your-repo" target="_blank" rel="noopener">
-          <i class="bi bi-github"></i> GitHub
-        </a>
-      </nav>
-    </div>
+  <header>
+    <i class="bi bi-lightning-charge-fill"></i>
+    Runner App
   </header>
 
-  <!-- Main -->
-  <main class="container">
-    <!-- Runner block -->
-    <section class="runner">
-      <div class="toolbar">
-        <button id="run-btn" class="btn">
-          <i class="bi bi-play-fill"></i> Run
-        </button>
-        <button id="clear-btn" class="btn btn-ghost">
-          <i class="bi bi-trash3"></i> Clear
-        </button>
-        <div class="spacer"></div>
-        <span id="status">
-          <i class="bi bi-circle-fill" style="font-size:10px;"></i> Ready
-        </span>
+  <!-- Main: two panels on desktop, stacked on mobile -->
+  <main>
+    <!-- Editor panel -->
+    <section class="panel">
+      <div class="panel-header">
+        <i class="bi bi-code-square"></i> Editor
       </div>
 
-      <textarea id="editor" spellcheck="false" placeholder="Write your Python code here...">print("Hello from Pyodide 👋")</textarea>
-      <pre id="output">// Output will appear here…</pre>
+      <textarea id="editor" spellcheck="false"># Python in your browser!
+import sys
+print("Python", sys.version)
+print("Hello from Pyodide 👋")
+
+# numpy & pandas are included in Pyodide; no install needed
+import numpy as np, pandas as pd
+A = np.arange(12).reshape(3, 4)
+df = pd.DataFrame(A, columns=list("WXYZ"))
+print("NumPy array:\\n", A)
+print("\\nPandas head():\\n", df.head())
+</textarea>
+
+      <div class="controls">
+        <button id="btn-run" title="Run" disabled>
+          <i class="bi bi-play-fill"></i> Run
+        </button>
+        <button id="btn-clear" title="Clear" disabled>
+          <i class="bi bi-trash3"></i> Clear
+        </button>
+      </div>
     </section>
 
-    <!-- Feature cards -->
-    <section class="cards">
-      <article class="card">
-        <h3><i class="bi bi-speedometer2"></i> Fast</h3>
-        <p>Optimized UI with minimal layout shifts for a smooth experience.</p>
-      </article>
+    <!-- Output panel -->
+    <section class="panel">
+      <div class="panel-header">
+        <i class="bi bi-terminal"></i> Console
+      </div>
 
-      <article class="card">
-        <h3><i class="bi bi-boxes"></i> Modular</h3>
-        <p>Swap in Pyodide or your own backend without changing the UI.</p>
-      </article>
+      <pre id="output"></pre>
 
-      <article class="card">
-        <h3><i class="bi bi-palette2"></i> Styled</h3>
-        <p>Clean dark theme using CSS variables and responsive layout.</p>
-      </article>
+      <div id="status">
+        <i class="bi bi-cloud-download"></i> Loading Python…
+      </div>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer class="site-footer">
-    <p>
-      <i class="bi bi-c-circle"></i> <span id="year"></span> Runner App • Built with
-      <i class="bi bi-filetype-html"></i> HTML,
-      <i class="bi bi-filetype-css"></i> CSS,
-      <i class="bi bi-bootstrap"></i> Icons
-    </p>
+  <footer>
+    <span><i class="bi bi-c-circle"></i> <span id="year"></span> Runner App</span>
   </footer>
 
-  <!-- Pyodide runtime (browser Python) -->
+  <!-- Pyodide runtime -->
   <script src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
 
-  <!-- Your script (stored in src/assets) -->
+  <!-- Your logic -->
   <script src="src/assets/script.js"></script>
-
-  <!-- Tiny helper for footer year (kept here to avoid editing your script.js) -->
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
