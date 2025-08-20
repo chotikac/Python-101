@@ -7,10 +7,50 @@
   box-sizing: border-box;
 }
 
+:root {
+  --bg: #f9fafb;
+  --fg: #333;
+  --border: #ddd;
+  --muted: #6b7280;
+  --primary: #0d6efd;
+
+  --panel-bg: #fff;
+  --panel-header-bg: #f1f1f1;
+
+  --btn-run: #198754;
+  --btn-run-hover: #157347;
+  --btn-clear: #dc3545;
+  --btn-clear-hover: #bb2d3b;
+
+  --console-bg: #111;
+  --console-fg: #0f0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b0f14;
+    --fg: #e6edf3;
+    --border: #1e2633;
+    --muted: #8aa0b2;
+    --primary: #7aa2f7;
+
+    --panel-bg: #121821;
+    --panel-header-bg: #0f1520;
+
+    --btn-run: #24d18a;
+    --btn-run-hover: #1fb277;
+    --btn-clear: #ff7b72;
+    --btn-clear-hover: #e76a62;
+
+    --console-bg: #0b0f14;
+    --console-fg: #d5f5d5;
+  }
+}
+
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9fafb;
-  color: #333;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
   line-height: 1.5;
   display: flex;
   flex-direction: column;
@@ -21,71 +61,70 @@ body {
    Header
 =========================== */
 header {
-  background: #0d6efd;
+  background: var(--primary);
   color: white;
-  padding: 1rem 2rem;
+  padding: 1rem 1.25rem;
   text-align: center;
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: .5rem;
 }
 
 /* ===========================
-   Main Layout
+   Main Layout (responsive)
 =========================== */
 main {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr; /* two columns on desktop */
   gap: 1rem;
-  padding: 1rem 2rem;
+  padding: 1rem 1.25rem;
+}
+@media (max-width: 768px) {
+  main {
+    grid-template-columns: 1fr; /* stack on mobile */
+  }
 }
 
+/* ===========================
+   Panels
+=========================== */
 .panel {
   display: flex;
   flex-direction: column;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel-bg);
   overflow: hidden;
 }
 
 .panel-header {
-  background: #f1f1f1;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
+  background: var(--panel-header-bg);
+  padding: 0.6rem 1rem;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  color: var(--muted);
 }
 
+/* ===========================
+   Editor
+=========================== */
 textarea#editor {
   flex: 1;
   padding: 1rem;
   border: none;
   outline: none;
-  font-family: monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 14px;
-  resize: none;
-  min-height: 300px;
-}
-
-/* ===========================
-   Console Output
-=========================== */
-#output {
-  flex: 1;
-  background: #111;
-  color: #0f0;
-  padding: 1rem;
-  font-family: monospace;
-  font-size: 14px;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  min-height: 300px;
+  resize: vertical;
+  min-height: 280px;
+  background: transparent;
+  color: inherit;
 }
 
 /* ===========================
@@ -94,64 +133,73 @@ textarea#editor {
 .controls {
   display: flex;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: #f8f9fa;
-  border-top: 1px solid #ddd;
+  padding: 0.6rem 1rem;
+  border-top: 1px solid var(--border);
+  background: var(--panel-header-bg);
 }
 
-button {
+.controls button {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.4rem 0.8rem;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.15s ease, opacity 0.15s ease;
 }
 
-button#btn-run {
-  background: #198754;
-  color: white;
+#btn-run {
+  background: var(--btn-run);
+  color: #fff;
 }
-button#btn-run:hover {
-  background: #157347;
-}
+#btn-run:hover { background: var(--btn-run-hover); }
 
-button#btn-clear {
-  background: #dc3545;
-  color: white;
+#btn-clear {
+  background: var(--btn-clear);
+  color: #fff;
 }
-button#btn-clear:hover {
-  background: #bb2d3b;
-}
+#btn-clear:hover { background: var(--btn-clear-hover); }
 
-button:disabled {
-  background: #adb5bd !important;
+.controls button:disabled {
+  opacity: .6;
   cursor: not-allowed;
 }
 
 /* ===========================
-   Status Bar
+   Console Output + Status
 =========================== */
-#status {
-  padding: 0.5rem 1rem;
+#output {
+  flex: 1;
+  background: var(--console-bg);
+  color: var(--console-fg);
+  padding: 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 14px;
-  background: #e9ecef;
-  border-top: 1px solid #ddd;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  min-height: 280px;
+}
+
+#status {
+  padding: 0.6rem 1rem;
+  font-size: 14px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  background: var(--panel-header-bg);
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 /* ===========================
    Footer
 =========================== */
 footer {
-  background: #0d6efd;
-  color: white;
   text-align: center;
-  padding: 0.75rem;
-  font-size: 14px;
+  font-size: 0.9rem;
+  padding: 0.9rem 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
 }
