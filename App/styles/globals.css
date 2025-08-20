@@ -1,0 +1,11 @@
+:root { --glow: 0 0 24px rgba(0,170,255,.25); }
+.bg-grid {
+  background-image:
+    radial-gradient(transparent 1px, rgba(127,127,127,0.07) 1px),
+    radial-gradient(transparent 1px, rgba(127,127,127,0.05) 1px);
+  background-size: 24px 24px, 48px 48px;
+  background-position: 0 0, 12px 12px;
+}
+.card-glow { box-shadow: var(--glow); border: 1px solid rgba(0,170,255,.25); }
+.editor { min-height: 220px; font-family: ui-monospace, Menlo, monospace; }
+.console { height: 260px; overflow: auto; white-space: pre-wrap; }

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Examples • Python 101</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/styles.css" />
+  </head>
+  <body class="bg-grid">
+    <nav class="navbar navbar-expand-lg border-bottom sticky-top backdrop-blur">
+      <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="../../index.html">
+          <i class="bi bi-cpu"></i> Python Programming 101
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars">
+          <span class="navbar-toggler-icon"><i class="bi bi-list"></i></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbars">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link" href="../../index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">Examples</a></li>
+            <li class="nav-item"><a class="nav-link" href="./Python-console.html">Python Console</a></li>
+            <li class="nav-item"><a class="nav-link" href="./Practise-python.html">Practice</a></li>
+          </ul>
+          <button id="themeToggle" class="btn btn-outline-primary btn-sm"><i class="bi bi-moon-stars" id="themeIcon"></i></button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container py-4" data-pyodide>
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="neon h2 mb-0"><i class="bi bi-journal-code"></i> Example Code</h1>
+        <span id="status" class="small text-secondary"><i class="bi bi-cloud"></i> Loading…</span>
+      </div>
+
+      <div class="row g-3">
+        <!-- Examples list -->
+        <div class="col-lg-4">
+          <div class="list-group" id="exampleList" role="tablist">
+            <button class="list-group-item list-group-item-action active" data-example="hello">
+              <i class="bi bi-1-circle"></i> Hello, Python
+            </button>
+            <button class="list-group-item list-group-item-action" data-example="datastruct">
+              <i class="bi bi-2-circle"></i> Data Structures
+            </button>
+            <button class="list-group-item list-group-item-action" data-example="csv">
+              <i class="bi bi-3-circle"></i> Data Analysis (CSV)
+            </button>
+            <button class="list-group-item list-group-item-action" data-example="ml" id="ml">
+              <i class="bi bi-4-circle"></i> Machine Learning (scikit‑learn)
+            </button>
+          </div>
+          <div class="alert alert-warning mt-3 small">
+            <i class="bi bi-exclamation-triangle"></i> Pyodide can’t install heavy native packages like <code>pandas</code> or <code>scikit-learn</code>.
+            The ML example uses pure‑Python logic to illustrate the workflow steps.
+          </div>
+        </div>
+
+        <!-- Editor + Output -->
+        <div class="col-lg-8">
+          <textarea id="py-editor" class="form-control editor" spellcheck="false"></textarea>
+          <div class="d-flex gap-2 mt-3">
+            <button id="btn-run" class="btn btn-primary"><i class="bi bi-play-fill"></i> Run</button>
+            <button id="btn-clear" class="btn btn-outline-secondary"><i class="bi bi-trash"></i> Clear Output</button>
+          </div>
+          <pre id="output" class="console mt-3"></pre>
+          <div class="small text-secondary">
+            Tip: open the full console page for more space → <a href="./Python-console.html">Python Console</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="py-4 border-top">
+      <div class="container small text-secondary">
+        <i class="bi bi-lightbulb"></i> Use these examples during class demos.
+      </div>
+    </footer>
+
+    <script>
+      // Example snippets
+      const EXAMPLES = {
+        hello: `# Hello, Python
+name = "Student"
+print("Hello,", name)
+for i in range(1, 6):
+    print("Counting:", i)`,
+        datastruct: `# Data Structures
+nums = [3, 1, 4, 1, 5, 9]
+names = {"alice": 18, "bob": 19}
+unique = set(nums)
+
+print("sum:", sum(nums))
+print("sorted:", sorted(nums))
+print("names->age:", names)
+print("unique:", unique)`,
+        csv: `# Mini "CSV" parsing (no pandas)
+data = "name,age\\nAlice,18\\nBob,19\\nCara,20"
+lines = data.strip().split("\\n")
+header = lines[0].split(",")
+rows = [dict(zip(header, line.split(","))) for line in lines[1:]]
+avg_age = sum(int(r["age"]) for r in rows) / len(rows)
+print("rows:", rows)
+print("avg age:", avg_age)`,
+        ml: `# ML concept demo (no scikit-learn in Pyodide)
+# 1) Split data
+X = [[1.0],[2.0],[3.0],[4.0]]
+y = [2.0, 4.1, 5.9, 8.2]
+
+# 2) "Fit" simple linear model: y = a*x + b (naive)
+def fit_linear(X, y):
+    # Closed-form least squares for single feature
+    n = len(X)
+    xs = [row[0] for row in X]
+    xbar = sum(xs)/n
+    ybar = sum(y)/n
+    num = sum((xi-xbar)*(yi-ybar) for xi, yi in zip(xs, y))
+    den = sum((xi-xbar)**2 for xi in xs)
+    a = num/den
+    b = ybar - a*xbar
+    return a, b
+
+a, b = fit_linear(X, y)
+print("model: y ≈", round(a,3), "* x +", round(b,3))
+
+# 3) Predict
+def predict(X, a, b):
+    return [a*row[0]+b for row in X]
+
+yhat = predict(X, a, b)
+print("yhat:", [round(v,3) for v in yhat])`
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const list = document.getElementById("exampleList");
+        const editor = document.getElementById("py-editor");
+        const first = list.querySelector("[data-example].active").dataset.example;
+        editor.value = EXAMPLES[first];
+        list.addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-example]");
+          if (!btn) return;
+          list.querySelectorAll("[data-example]").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          editor.value = EXAMPLES[btn.dataset.example] || "";
+        });
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,3 @@
+App/.env.local
+App/node_modules
+App/.next
