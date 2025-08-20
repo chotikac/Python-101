@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Runner App</title>
+  <title>Runner App — Examples</title>
 
   <!-- Bootstrap Icons ONLY -->
   <link
@@ -11,19 +11,17 @@
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
   />
 
-  <!-- Your styles (stored in src/assets) -->
+  <!-- Site styles -->
   <link rel="stylesheet" href="src/assets/styles.css" />
 </head>
 <body>
   <!-- Header -->
   <header class="site-header">
     <div class="header-row">
-      <h1><i class="bi bi-lightning-charge-fill"></i>&nbsp;Runner App</h1>
+      <h1><i class="bi bi-journal-text"></i>&nbsp;Examples</h1>
       <nav>
-        <a href="#"><i class="bi bi-house"></i> Home</a>
-        <a href="#"><i class="bi bi-journal-text"></i> Docs</a>
-        <a href="#"><i class="bi bi-terminal"></i> Examples</a>
-        <a href="#"><i class="bi bi-chat-dots"></i> Contact</a>
+        <a href="index.html"><i class="bi bi-house"></i> Home</a>
+        <a href="#"><i class="bi bi-journal-text"></i> Examples</a>
         <a href="https://github.com/your-username/your-repo" target="_blank" rel="noopener">
           <i class="bi bi-github"></i> GitHub
         </a>
@@ -33,40 +31,88 @@
 
   <!-- Main -->
   <main class="container">
-    <!-- Runner block -->
-    <section class="runner">
-      <div class="toolbar">
-        <button id="run-btn" class="btn">
-          <i class="bi bi-play-fill"></i> Run
-        </button>
-        <button id="clear-btn" class="btn btn-ghost">
-          <i class="bi bi-trash3"></i> Clear
-        </button>
-        <div class="spacer"></div>
-        <span id="status">
-          <i class="bi bi-circle-fill" style="font-size:10px;"></i> Ready
-        </span>
-      </div>
-
-      <textarea id="editor" spellcheck="false" placeholder="Write your Python code here...">print("Hello from Pyodide 👋")</textarea>
-      <pre id="output">// Output will appear here…</pre>
+    <section class="runner" style="padding:16px">
+      <p style="color:var(--muted);margin:0 0 8px;">
+        Click any card’s <em>Load in Runner</em> button to send the code to the main editor on <strong>Home</strong>.
+      </p>
     </section>
 
-    <!-- Feature cards -->
+    <!-- Snippet cards -->
     <section class="cards">
+      <!-- Hello World -->
       <article class="card">
-        <h3><i class="bi bi-speedometer2"></i> Fast</h3>
-        <p>Optimized UI with minimal layout shifts for a smooth experience.</p>
+        <h3><i class="bi bi-emoji-smile"></i> Hello, Pyodide</h3>
+        <p>A tiny sanity check that prints Python version and a greeting.</p>
+        <pre id="snippet-hello" style="margin-top:8px;white-space:pre-wrap;">
+import sys
+print("Python", sys.version)
+print("Hello from Pyodide 👋")</pre>
+        <div style="margin-top:10px;">
+          <button class="btn" onclick="loadSnippet('snippet-hello')">
+            <i class="bi bi-box-arrow-in-right"></i> Load in Runner
+          </button>
+        </div>
       </article>
 
+      <!-- NumPy basics -->
       <article class="card">
-        <h3><i class="bi bi-boxes"></i> Modular</h3>
-        <p>Swap in Pyodide or your own backend without changing the UI.</p>
+        <h3><i class="bi bi-braces"></i> NumPy Basics</h3>
+        <p>Create arrays and compute simple stats.</p>
+        <pre id="snippet-numpy" style="margin-top:8px;white-space:pre-wrap;">
+import numpy as np
+
+a = np.arange(12).reshape(3,4)
+print("Array:\\n", a)
+print("Mean:", a.mean(), "Std:", a.std())
+print("Row sums:", a.sum(axis=1))</pre>
+        <div style="margin-top:10px;">
+          <button class="btn" onclick="loadSnippet('snippet-numpy')">
+            <i class="bi bi-box-arrow-in-right"></i> Load in Runner
+          </button>
+        </div>
       </article>
 
+      <!-- Pandas groupby -->
       <article class="card">
-        <h3><i class="bi bi-palette2"></i> Styled</h3>
-        <p>Clean dark theme using CSS variables and responsive layout.</p>
+        <h3><i class="bi bi-table"></i> Pandas GroupBy</h3>
+        <p>Quick aggregation demo on a small DataFrame.</p>
+        <pre id="snippet-pandas" style="margin-top:8px;white-space:pre-wrap;">
+import pandas as pd
+
+df = pd.DataFrame({
+    "team": ["A","A","B","B","B","C"],
+    "score": [10, 15, 7, 12, 9, 20]
+})
+print(df)
+print("\\nMean by team:")
+print(df.groupby("team")["score"].mean())</pre>
+        <div style="margin-top:10px;">
+          <button class="btn" onclick="loadSnippet('snippet-pandas')">
+            <i class="bi bi-box-arrow-in-right"></i> Load in Runner
+          </button>
+        </div>
+      </article>
+
+      <!-- Matplotlib plot -->
+      <article class="card">
+        <h3><i class="bi bi-graph-up"></i> Matplotlib Plot</h3>
+        <p>Simple line plot (appears inline in the console area).</p>
+        <pre id="snippet-plot" style="margin-top:8px;white-space:pre-wrap;">
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 2*np.pi, 100)
+y = np.sin(x)
+plt.plot(x, y)
+plt.title("Sine wave")
+plt.xlabel("x")
+plt.ylabel("sin(x)")
+plt.show()</pre>
+        <div style="margin-top:10px;">
+          <button class="btn" onclick="loadSnippet('snippet-plot')">
+            <i class="bi bi-box-arrow-in-right"></i> Load in Runner
+          </button>
+        </div>
       </article>
     </section>
   </main>
@@ -74,22 +120,26 @@
   <!-- Footer -->
   <footer class="site-footer">
     <p>
-      <i class="bi bi-c-circle"></i> <span id="year"></span> Runner App • Built with
-      <i class="bi bi-filetype-html"></i> HTML,
-      <i class="bi bi-filetype-css"></i> CSS,
-      <i class="bi bi-bootstrap"></i> Icons
+      <i class="bi bi-c-circle"></i> <span id="year"></span> Runner App • Examples
     </p>
   </footer>
 
-  <!-- Pyodide runtime (browser Python) -->
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
-
-  <!-- Your script (stored in src/assets) -->
-  <script src="src/assets/script.js"></script>
-
-  <!-- Tiny helper for footer year (kept here to avoid editing your script.js) -->
+  <!-- Tiny helper: copy snippet to localStorage and go home -->
   <script>
+    // Year
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Match the LS key used by your script.js
+    const LS_KEY = "runner-editor-code";
+
+    function loadSnippet(preId) {
+      const el = document.getElementById(preId);
+      if (!el) return;
+      const code = el.textContent.replace(/^\n/, ""); // trim leading newline if any
+      try { localStorage.setItem(LS_KEY, code); } catch (_) {}
+      // Navigate back to the main runner (index.html)
+      window.location.href = "index.html";
+    }
   </script>
 </body>
 </html>
