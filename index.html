@@ -1,110 +1,95 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Python Demos — GitHub Pages</title>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Runner App</title>
 
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Bootstrap Icons ONLY -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+  />
 
-  <!-- Site CSS -->
-  <link href="src/assets/styles.css" rel="stylesheet" />
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <!-- Your styles (stored in src/assets) -->
+  <link rel="stylesheet" href="src/assets/styles.css" />
 </head>
 <body>
+  <!-- Header -->
   <header class="site-header">
     <div class="header-row">
-      <h1><i class="bi bi-code-slash"></i> Python Demos (Browser)</h1>
+      <h1><i class="bi bi-lightning-charge-fill"></i>&nbsp;Runner App</h1>
       <nav>
-        <a href="./"><i class="bi bi-house"></i> Home</a>
-        <a href="examples/hello-python.html"><i class="bi bi-rocket-takeoff"></i> Hello</a>
-        <a href="examples/nmr-pqn.html"><i class="bi bi-diagram-3"></i> NMR PQN</a>
-        <a href="https://github.com/your-username/your-gh-pages-repo" target="_blank" rel="noopener">
+        <a href="#"><i class="bi bi-house"></i> Home</a>
+        <a href="#"><i class="bi bi-journal-text"></i> Docs</a>
+        <a href="#"><i class="bi bi-terminal"></i> Examples</a>
+        <a href="#"><i class="bi bi-chat-dots"></i> Contact</a>
+        <a href="https://github.com/your-username/your-repo" target="_blank" rel="noopener">
           <i class="bi bi-github"></i> GitHub
         </a>
       </nav>
     </div>
   </header>
 
+  <!-- Main -->
   <main class="container">
-    <section>
-      <p>This site runs real Python via <strong>Pyodide</strong> (CPython → WebAssembly). Try it:</p>
-
-      <div class="runner">
-        <div class="toolbar">
-          <button id="btn-run" class="btn" disabled>
-            <i class="bi bi-play-fill"></i> Run
-          </button>
-          <button id="btn-clear" class="btn btn-ghost" disabled>
-            <i class="bi bi-trash3"></i> Clear
-          </button>
-          <span class="spacer"></span>
-          <span id="status"><i class="bi bi-cloud-download"></i> Loading Python…</span>
-        </div>
-
-        <textarea id="editor" spellcheck="false"># Python in your browser!
-import sys
-print("Python", sys.version)
-print("Hello from Pyodide 👋")
-
-# Install pure-Python wheels (if available) with micropip
-import micropip
-await micropip.install(["numpy==2.0.1", "pandas==2.2.2"])
-
-import numpy as np
-import pandas as pd
-a = np.arange(9).reshape(3,3)
-df = pd.DataFrame(a, columns=["x","y","z"])
-print("NumPy array:\\n", a)
-print("\\nPandas DataFrame:\\n", df)
-        </textarea>
-
-        <pre id="output" aria-live="polite"></pre>
+    <!-- Runner block -->
+    <section class="runner">
+      <div class="toolbar">
+        <button id="run-btn" class="btn">
+          <i class="bi bi-play-fill"></i> Run
+        </button>
+        <button id="clear-btn" class="btn btn-ghost">
+          <i class="bi bi-trash3"></i> Clear
+        </button>
+        <div class="spacer"></div>
+        <span id="status">
+          <i class="bi bi-circle-fill" style="font-size:10px;"></i> Ready
+        </span>
       </div>
 
-      <details>
-        <summary><i class="bi bi-lightbulb"></i> Tips</summary>
-        <ul>
-          <li>First run downloads Pyodide & packages; later runs are fast.</li>
-          <li>Use <code>await micropip.install([...])</code> for pure-Python packages.</li>
-          <li>For charts: try <code>matplotlib</code> in Pyodide or Plotly JS.</li>
-        </ul>
-      </details>
+      <textarea id="editor" spellcheck="false" placeholder="Write your Python code here...">print("Hello from Pyodide 👋")</textarea>
+      <pre id="output">// Output will appear here…</pre>
     </section>
 
+    <!-- Feature cards -->
     <section class="cards">
       <article class="card">
-        <h3><i class="bi bi-graph-up"></i> Data Science Mini</h3>
-        <p>NumPy/Pandas quick tasks (describe, groupby, simple plots).</p>
-        <a class="btn" href="examples/hello-python.html">
-          <i class="bi bi-box-arrow-up-right"></i> Open
-        </a>
+        <h3><i class="bi bi-speedometer2"></i> Fast</h3>
+        <p>Optimized UI with minimal layout shifts for a smooth experience.</p>
       </article>
 
       <article class="card">
-        <h3><i class="bi bi-diagram-3"></i> Bio/NMR (stub)</h3>
-        <p>PQN normalization sketch for 1D NMR intensities.</p>
-        <a class="btn" href="examples/nmr-pqn.html">
-          <i class="bi bi-box-arrow-up-right"></i> Open
-        </a>
+        <h3><i class="bi bi-boxes"></i> Modular</h3>
+        <p>Swap in Pyodide or your own backend without changing the UI.</p>
+      </article>
+
+      <article class="card">
+        <h3><i class="bi bi-palette2"></i> Styled</h3>
+        <p>Clean dark theme using CSS variables and responsive layout.</p>
       </article>
     </section>
   </main>
 
+  <!-- Footer -->
   <footer class="site-footer">
     <p>
-      <i class="bi bi-c-circle"></i> <span id="year"></span> Your Name • Built with
+      <i class="bi bi-c-circle"></i> <span id="year"></span> Runner App • Built with
       <i class="bi bi-filetype-html"></i> HTML,
       <i class="bi bi-filetype-css"></i> CSS,
-      <i class="bi bi-filetype-js"></i> JS &
-      <i class="bi bi-terminal"></i> Pyodide
+      <i class="bi bi-bootstrap"></i> Icons
     </p>
   </footer>
 
-  <!-- Pyodide runtime -->
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
-  <!-- Site JS -->
+  <!-- Pyodide runtime (browser Python) -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
+
+  <!-- Your script (stored in src/assets) -->
   <script src="src/assets/script.js"></script>
+
+  <!-- Tiny helper for footer year (kept here to avoid editing your script.js) -->
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
