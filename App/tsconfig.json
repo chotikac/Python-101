@@ -1,16 +1,37 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "lib": ["dom", "ES2020"],
+    "lib": [
+      "dom",
+      "ES2020"
+    ],
     "jsx": "preserve",
     "moduleResolution": "node",
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@/styles/*": ["styles/*"]
-    }
+      "@/*": [
+        "./*"
+      ],
+      "@/styles/*": [
+        "styles/*"
+      ]
+    },
+    "allowJs": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

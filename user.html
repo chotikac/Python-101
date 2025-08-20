@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DNA Base Game — Draw & Redeem</title>
+  <style>
+    :root{ --bg:#0b1020; --card:#111834; --ink:#e9f0ff; --muted:#9fb0d3; --accent:#7dd3fc; --A:#ef4444; --T:#f59e0b; --C:#22c55e; --G:#3b82f6; }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:system-ui, -apple-system, Segoe UI, Roboto, Inter; background:var(--bg); color:var(--ink)}
+    header{display:flex; gap:12px; align-items:center; padding:16px 20px; border-bottom:1px solid #1e2a55; position:sticky; top:0; background:linear-gradient(180deg, rgba(11,16,32,.9), rgba(11,16,32,.7)); backdrop-filter:saturate(120%) blur(6px)}
+    h1{font-size:18px; margin:0; letter-spacing:.3px}
+    main{padding:18px; max-width:720px; margin:0 auto}
+    .controls{display:flex; flex-wrap:wrap; gap:10px; align-items:end; margin:12px 0 20px}
+    label{font-size:12px; color:var(--muted); display:block; margin-bottom:6px}
+    select, input[type="text"]{background:#0f1530; color:var(--ink); border:1px solid #2c3768; border-radius:10px; padding:10px 12px}
+    button{padding:10px 14px; border-radius:10px; border:1px solid #2c3768; background:#14204a; color:var(--ink); cursor:pointer}
+    button.primary{border-color:#3a4aa0; background:#1a2b66}
+    .hint{color:var(--muted); font-size:12px}
+    .card{background:var(--card); border:1px dashed #2b3565; border-radius:16px; padding:14px; position:relative; overflow:hidden}
+    .badge{position:absolute; top:10px; right:10px; font-size:11px; color:#a6b7e5; border:1px solid #2e3a72; border-radius:20px; padding:4px 8px}
+    .base{font-size:72px; font-weight:800; letter-spacing:2px; margin:20px 0 0}
+    .base[data-b="A"]{color:var(--A)} .base[data-b="T"]{color:var(--T)} .base[data-b="C"]{color:var(--C)} .base[data-b="G"]{color:var(--G)}
+    .id{font-family:ui-monospace, Menlo, Consolas, monospace; font-size:14px; letter-spacing:.5px; margin-top:12px}
+  </style>
+</head>
+<body>
+<header>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7c4-5 12-5 16 0M4 17c4 5 12 5 16 0" stroke="#7dd3fc" stroke-width="1.6" stroke-linecap="round"/></svg>
+  <h1>Draw & Redeem</h1>
+</header>
+<main>
+  <p class="hint">Tap <b>Draw</b> to get a random card from the jar. Then tap <b>Redeem</b> to lock it (one time only).</p>
+
+  <div class="controls">
+    <button class="primary" onclick="draw()">Draw random</button>
+    <button onclick="redeem()">Redeem</button>
+    <span id="stats" class="hint" style="margin-left:8px"></span>
+  </div>
+
+  <div id="msg" class="hint"></div>
+  <div id="result"></div>
+
+</main>
+
+<script>
+  const STORE_KEY = 'dna_game_cards_v1';
+  const USED_KEY  = 'dna_game_used_v1';
+  const LAST_KEY  = 'dna_game_last_pick_v1'; // persist last drawn pick for this browser
+  let cards = loadJSON(STORE_KEY) || [];
+  let used  = loadJSON(USED_KEY)  || {}; // { id: timestamp }
+  let pick  = null; // last drawn
+
+  function loadJSON(key){ try{ return JSON.parse(localStorage.getItem(key) || 'null'); }catch{ return null } }
+  function saveJSON(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+
+  function remaining(){
+    // always compute with freshest storage to survive refresh & admin edits
+    cards = loadJSON(STORE_KEY) || [];
+    used  = loadJSON(USED_KEY)  || {};
+    return cards.filter(c=>!used[c.id]);
+  }
+
+  function findCard(id){ return (loadJSON(STORE_KEY) || []).find(c => c.id === id) || null; }
+
+  function draw(){
+    const msg = document.getElementById('msg');
+    const pool = remaining();
+    if(!cards.length){ msg.textContent='No deck yet. Teacher must generate cards first.'; return }
+    if(!pool.length){ msg.textContent = 'Jar is empty — all cards redeemed.'; renderStats(); return }
+    pick = pool[Math.floor(Math.random()*pool.length)];
+    saveJSON(LAST_KEY, { id: pick.id, at: Date.now() }); // persist selection for this browser
+    renderPick(); msg.textContent = 'Drawn. Tap Redeem to lock it.'; renderStats();
+  }
+
+  function redeem(){
+    const msg = document.getElementById('msg');
+    if(!pick){ msg.textContent='Draw a card first.'; return }
+    used  = loadJSON(USED_KEY)  || {}; // refresh in case another kiosk redeemed
+    if(used[pick.id]){ msg.textContent='This card is already redeemed.'; renderStats(); return }
+    const now = new Date().toLocaleString(); used[pick.id] = now; saveJSON(USED_KEY, used);
+    // keep LAST_KEY so user still sees their card after refresh
+    saveJSON(LAST_KEY, { id: pick.id, at: Date.now(), redeemedAt: now });
+    msg.textContent = `✅ Redeemed! Keep this ID: ${pick.id}`; renderPick(); renderStats();
+  }
+
+  function clearPick(){
+    pick=null;
+    localStorage.removeItem(LAST_KEY);
+    document.getElementById('result').innerHTML='';
+    document.getElementById('msg').textContent='';
+    renderStats();
+  }
+
+  function renderPick(){
+    const wrap = document.getElementById('result');
+    if(!pick){ wrap.innerHTML=''; return }
+    wrap.innerHTML = `
+      <div class="card">
+        <span class="badge">${used[pick.id] ? 'Redeemed' : 'Your draw'}</span>
+        <div class="base" data-b="${pick.base}">${pick.base}</div>
+        <div class="id">ID: ${pick.id}</div>
+      </div>`;
+  }
+
+  function renderStats(){
+    const left = remaining().length;
+    document.getElementById('stats').textContent = `Remaining: ${left}`;
+  }
+
+  (function boot(){
+    // restore last pick if any
+    const last = loadJSON(LAST_KEY);
+    if(last && last.id){
+      const c = findCard(last.id);
+      if(c){
+        pick = c;
+        // show appropriate message
+        const msg = document.getElementById('msg');
+        used  = loadJSON(USED_KEY)  || {};
+        if(used[pick.id]){
+          msg.textContent = `✅ Redeemed earlier. Keep this ID: ${pick.id}`;
+        } else {
+          msg.textContent = 'Restored your last draw. Tap Redeem to lock it.';
+        }
+        renderPick();
+      } else {
+        // card no longer in deck (admin reset) -> clear
+        localStorage.removeItem(LAST_KEY);
+      }
+    }
+    renderStats();
+  })();
+</script>
+</body>
+</html>

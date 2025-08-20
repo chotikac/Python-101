@@ -1,5 +1,6 @@
 import type { AppProps } from "next/app";
 import "@/styles/globals.css";
+import Footer from "@/components/Footer"
 
 // Bootstrap & Icons via CDN in Head
 import Head from "next/head";
@@ -53,10 +54,8 @@ export default function App({ Component, pageProps }: AppProps) {
           </div>
         </nav>
         <Component {...pageProps} />
-        <footer className="border-top mt-4 pt-3 small text-secondary">
-          <i className="bi bi-code-slash"/> {new Date().getFullYear()} • Built with Next.js & Bootstrap
-        </footer>
       </div>
+      <Footer />
     </>
   );
 }
