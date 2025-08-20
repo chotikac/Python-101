@@ -1,87 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Runner App</title>
-
-  <!-- Bootstrap Icons ONLY -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-  />
-
-  <!-- Site styles -->
-  <link rel="stylesheet" href="src/assets/styles.css" />
+  <title>DNA Base Game</title>
+  <style>
+    :root{ --bg:#0b1020; --card:#111834; --ink:#e9f0ff; --muted:#9fb0d3; --accent:#7dd3fc; }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:system-ui, -apple-system, Segoe UI, Roboto, Inter;
+         background:var(--bg); color:var(--ink); display:flex; flex-direction:column;
+         min-height:100vh; align-items:center; justify-content:center; text-align:center}
+    h1{font-size:28px; margin:0 0 10px}
+    p{color:var(--muted); margin-bottom:30px}
+    .links{display:flex; gap:20px; flex-wrap:wrap; justify-content:center}
+    a{padding:16px 28px; border-radius:14px; text-decoration:none; color:var(--ink);
+      border:1px solid #2c3768; background:#14204a; font-weight:500; letter-spacing:.5px}
+    a:hover{background:#1a2b66; border-color:#3a4aa0}
+    a.admin{background:#401a1a; border-color:#7a2b2b}
+    a.admin:hover{background:#5a1f1f; border-color:#a94444}
+    footer{margin-top:40px; font-size:12px; color:var(--muted)}
+  </style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <i class="bi bi-lightning-charge-fill"></i>
-    Runner App
-  </header>
-
-  <!-- Main: two panels on desktop, stacked on mobile -->
-  <main>
-    <!-- Editor panel -->
-    <section class="panel">
-      <div class="panel-header">
-        <i class="bi bi-code-square"></i> Editor
-      </div>
-
-      <textarea id="editor" spellcheck="false"># Python in your browser!
-import sys
-print("Python", sys.version)
-print("Hello from Pyodide 👋")
-
-# numpy & pandas are included in Pyodide; no install needed
-import numpy as np, pandas as pd
-A = np.arange(12).reshape(3, 4)
-df = pd.DataFrame(A, columns=list("WXYZ"))
-print("NumPy array:\\n", A)
-print("\\nPandas head():\\n", df.head())
-</textarea>
-
-      <div class="controls">
-        <button id="btn-run" title="Run" disabled>
-          <i class="bi bi-play-fill"></i> Run
-        </button>
-        <button id="btn-clear" title="Clear" disabled>
-          <i class="bi bi-trash3"></i> Clear
-        </button>
-      </div>
-    </section>
-
-    <!-- Output panel -->
-    <section class="panel">
-      <div class="panel-header">
-        <i class="bi bi-terminal"></i> Console
-      </div>
-
-      <pre id="output"></pre>
-
-      <div id="status">
-        <i class="bi bi-cloud-download"></i> Loading Python…
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <span><i class="bi bi-c-circle"></i> <span id="year"></span> Runner App</span>
-    <span class="links">
-      <a href="examples.html"><i class="bi bi-journal-text"></i> Examples</a>
-      <a href="about.html"><i class="bi bi-info-circle"></i> About</a>
-      <a href="https://github.com/your-username/your-repo" target="_blank" rel="noopener">
-        <i class="bi bi-github"></i> GitHub
-      </a>
-    </span>
-  </footer>
-
-  <!-- Pyodide runtime -->
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
-
-  <!-- App logic -->
-  <script src="src/assets/script.js"></script>
+  <h1>DNA Base Game</h1>
+  <p>Select your role to continue</p>
+  <div class="links">
+    <a href="user.html">🎮 User</a>
+    <a class="admin" href="admin.html">⚙️ Admin</a>
+  </div>
+  <footer>© 2025 DNA Base Game</footer>
 </body>
 </html>

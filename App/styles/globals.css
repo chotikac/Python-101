@@ -1,0 +1,60 @@
+:root { --glow: 0 0 24px rgba(0,170,255,.25); }
+.bg-grid {
+  background-image:
+    radial-gradient(transparent 1px, rgba(127,127,127,0.07) 1px),
+    radial-gradient(transparent 1px, rgba(127,127,127,0.05) 1px);
+  background-size: 24px 24px, 48px 48px;
+  background-position: 0 0, 12px 12px;
+}
+.card-glow { box-shadow: var(--glow); border: 1px solid rgba(0,170,255,.25); }
+.editor { min-height: 220px; font-family: ui-monospace, Menlo, monospace; }
+.console { height: 260px; overflow: auto; white-space: pre-wrap; }
+
+/* Subtle dotted surface like the screenshot */
+.bg-surface,
+.card.bg-surface {
+  background-image:
+    radial-gradient(transparent 1px, rgba(127,127,127,0.07) 1px),
+    radial-gradient(transparent 1px, rgba(127,127,127,0.05) 1px);
+  background-size: 24px 24px, 48px 48px;
+  background-position: 0 0, 12px 12px;
+  border-radius: 1rem;
+}
+
+/* Gradient brand word */
+.brand-grad {
+  background: linear-gradient(90deg, #2d8cff 0%, #7aa8ff 50%, #8ad6ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Soft neon tile glow */
+.glow-tile {
+  border: 1px solid rgba(0,170,255,.25);
+  box-shadow: 0 0 0 1px rgba(0,170,255,.15), 0 10px 30px rgba(0,0,0,.25);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.glow-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 0 1px rgba(0,170,255,.25), 0 16px 40px rgba(0,0,0,.35);
+
+}
+
+.footer {
+  background: transparent;
+}
+.footer .container {
+  color: var(--bs-secondary-color, #aaa);
+}
+
+/* Blur + dim page when modal is open */
+.modal-backdrop.show {
+  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Optional: prevent page scroll when modal is open (nice UX) */
+.modal.d-block {
+  overflow-y: auto;
+}
