@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Runner App — Examples</title>
+
+  <!-- Bootstrap Icons ONLY -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+  />
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="src/assets/styles.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <i class="bi bi-journal-text"></i>
+    Examples
+  </header>
+
+  <main class="container-narrow">
+    <section class="notice">
+      <p>
+        Click <em>Load in Runner</em> to send a snippet to the editor on <a href="index.html">Home</a>.
+      </p>
+    </section>
+
+    <section class="grid">
+      <!-- Hello -->
+      <article class="card">
+        <h3><i class="bi bi-emoji-smile"></i> Hello, Pyodide</h3>
+        <p>Tiny sanity check: version + greeting.</p>
+<pre id="snippet-hello">import sys
+print("Python", sys.version)
+print("Hello from Pyodide 👋")</pre>
+        <button class="btn" onclick="loadSnippet('snippet-hello')">
+          <i class="bi bi-box-arrow-in-right"></i> Load in Runner
+        </button>
+      </article>
+
+      <!-- NumPy -->
+      <article class="card">
+        <h3><i class="bi bi-braces"></i> NumPy Basics</h3>
+        <p>Create arrays and simple stats.</p>
+<pre id="snippet-numpy">import numpy as np
+
+a = np.arange(12).reshape(3,4)
+print("Array:\\n", a)
+print("Mean:", a.mean(), "Std:", a.std())
+print("Row sums:", a.sum(axis=1))</pre>
+        <button class="btn" onclick="loadSnippet('snippet-numpy')">
+          <i class="bi bi-box-arrow-in-right"></i> Load in Runner
+        </button>
+      </article>
+
+      <!-- Pandas -->
+      <article class="card">
+        <h3><i class="bi bi-table"></i> Pandas GroupBy</h3>
+        <p>Quick aggregation on a small DataFrame.</p>
+<pre id="snippet-pandas">import pandas as pd
+
+df = pd.DataFrame({
+    "team": ["A","A","B","B","B","C"],
+    "score": [10, 15, 7, 12, 9, 20]
+})
+print(df)
+print("\\nMean by team:")
+print(df.groupby("team")["score"].mean())</pre>
+        <button class="btn" onclick="loadSnippet('snippet-pandas')">
+          <i class="bi bi-box-arrow-in-right"></i> Load in Runner
+        </button>
+      </article>
+
+      <!-- Plot -->
+      <article class="card">
+        <h3><i class="bi bi-graph-up"></i> Matplotlib Plot</h3>
+        <p>Simple sine wave plot.</p>
+<pre id="snippet-plot">import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 2*np.pi, 100)
+y = np.sin(x)
+plt.plot(x, y)
+plt.title("Sine wave")
+plt.xlabel("x")
+plt.ylabel("sin(x)")
+plt.show()</pre>
+        <button class="btn" onclick="loadSnippet('snippet-plot')">
+          <i class="bi bi-box-arrow-in-right"></i> Load in Runner
+        </button>
+      </article>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <span><i class="bi bi-c-circle"></i> <span id="year"></span> Runner App • Examples</span>
+    <span class="links">
+      <a href="index.html"><i class="bi bi-house"></i> Home</a>
+    </span>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+    // Must match LS key in script.js
+    const LS_KEY = "runner-editor-code";
+    function loadSnippet(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const code = el.textContent.replace(/^\n/, "");
+      try { localStorage.setItem(LS_KEY, code); } catch (_) {}
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
