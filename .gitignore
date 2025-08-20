@@ -3,3 +3,4 @@ App/node_modules
 App/.next
 Random-group/node_modules
 Random-group/.next
+Random-group/.env.local
